@@ -27,6 +27,37 @@ router.get('/category', (req, res) => {
   });
 });
 // A route to get all sub-category from a table
+router.get('/sub-category', (req, res) => {
+  // Use the connectDatabase function to establish a database connection
+  const query = `SELECT * FROM sub_category `; 
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(rows);
+    }
+
+  });
+});
+// A route to get dua from a table
+router.get('/dua', (req, res) => {
+  // Use the connectDatabase function to establish a database connection
+  const query = `SELECT * FROM dua `;
+
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(rows);
+    }
+
+  });
+});
+
+//by id
+// A route to get all sub-category from a table
 router.get('/sub-category/:cat_id', (req, res) => {
   // Use the connectDatabase function to establish a database connection
   const query = `SELECT * FROM sub_category where cat_id=${req.params.cat_id}`; 
