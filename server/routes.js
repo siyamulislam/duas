@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Import the connectDatabase function from db.js
 const connectDatabase = require('./db_connect');
+const db = connectDatabase('./dua_main.sqlite');
 
 // Root route
 router.get('/', (req, res) => {
@@ -13,7 +14,6 @@ router.get('/', (req, res) => {
 // A route to get all category from a table
 router.get('/category', (req, res) => {
   // Use the connectDatabase function to establish a database connection
-  const db = connectDatabase('./dua_main.sqlite');
   const query = 'SELECT * FROM category';
 
   db.all(query, (err, rows) => {
@@ -24,8 +24,35 @@ router.get('/category', (req, res) => {
       res.json(rows);
     }
 
-    // Close the database connection after handling the request
-    db.close();
+  });
+});
+// A route to get all sub-category from a table
+router.get('/sub-category/:cat_id', (req, res) => {
+  // Use the connectDatabase function to establish a database connection
+  const query = `SELECT * FROM sub_category where cat_id=${req.params.cat_id}`; 
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(rows);
+    }
+
+  });
+});
+// A route to get dua from a table
+router.get('/dua/:cat_id/:subcat_id', (req, res) => {
+  // Use the connectDatabase function to establish a database connection
+  const query = `SELECT * FROM dua where cat_id=${req.params.cat_id} and subcat_id=${req.params.subcat_id}`;
+
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(rows);
+    }
+
   });
 });
 
